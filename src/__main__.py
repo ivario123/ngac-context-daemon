@@ -30,7 +30,7 @@ def new_daemon(type: str, event_type: str, event: str, context_variable: str):
     if not event:
         return f"No such event for event type {event_type}", 400
 
-    daemon_manager + type(event_type, event, "Some context variable")
+    daemon_manager + type(event_type, event, context_variable)
     print(daemon_manager.daemons)
     print(type, event_type, event, context_variable)
     return "Ok"

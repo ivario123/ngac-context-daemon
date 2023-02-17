@@ -8,7 +8,7 @@ class Event:
     """
     NGAC = NGAC(policy_server_url=NGAC_URL,token="admin_token")
 
-    def trigger(self):
+    def trigger(self,context_variable:str):
         """
         Called when the timeout is reached
         """

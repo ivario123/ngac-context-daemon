@@ -1,5 +1,5 @@
 from threading import Thread, Lock
-from temporal import WeekDay, Second
+from temporal import WeekDay, Hour
 from event import EventGroup, Event
 from typing import Type
 from time import sleep
@@ -53,7 +53,7 @@ class Temporal(Daemon):
     """
     mapping: dict[str, Type[EventGroup]] = {
         "WeekDay": WeekDay,
-        "Second": Second,
+        "Hour": Hour,
     }
     # This daemon is entirely self contained to this module
 
@@ -66,7 +66,7 @@ class Temporal(Daemon):
 
     def body(self):
         # Do stuff here
-        print(self.event.event.trigger())
+        print(self.event.event.trigger(self.context_variable))
         self.event.event.get_next_delay()
 
         self.thread.run()
