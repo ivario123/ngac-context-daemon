@@ -2,7 +2,6 @@ from flask import Flask, request, url_for
 from threading import Lock
 from require import fields
 from daemon import *
-WhatType = type
 
 daemon_mutex = Lock()
 
@@ -12,6 +11,34 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return "index"
+
+
+@app.route("/daemon_types", methods=["POST"])
+def daemon_types():
+    return ",".join(mapping.keys())
+
+
+@app.route("/event_types", methods=["POST"])
+@fields(request)
+def event_types(type: str):
+
+    type: Type[Daemon] = mapping.get(type, None)
+    if not type:
+        return "No such daemon type", 400
+    return ",".join(type.mapping.keys())
+
+
+@app.route("/event_types", methods=["POST"])
+@fields(request)
+def event_types(type: str, event_type: str):
+    type: Type[Daemon] = mapping.get(type, None)
+    if not type:
+        return "No such daemon type", 400
+
+    event_type: Type[EventGroup] = type.mapping.get(event_type, None)
+    if not event_type:
+        return f"No such event type for {type}", 400
+    return ",".join(event_type.mapping.keys())
 
 
 @app.route("/daemon", methods=["POST"])
