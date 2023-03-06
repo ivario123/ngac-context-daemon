@@ -10,10 +10,12 @@ class WeekDay(EventGroup):
     """
     Reports on weekday to the server
     """
+
     class DayOfTheWeek(Event):
         """
         Triggers on day change
         """
+
         started = False
 
         def get_next_delay(self):
@@ -21,25 +23,32 @@ class WeekDay(EventGroup):
                 self.started = True
                 return
             wait_until(first(("00:00",)))
+
         days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-            "Sunday"
+            "'Monday'",
+            "'Tuesday'",
+            "'Wednesday'",
+            "'Thursday'",
+            "'Friday'",
+            "'Saturday'" "'Sunday'",
         ]
 
         def trigger(self, context_variable: str):
-            print(super().NGAC.change_context(
-                [f"{context_variable}:{self.days[datetime.weekday(datetime.now())]}"], token="epp_token"))
+            print(
+                super().NGAC.change_context(
+                    [
+                        f"{context_variable}:{self.days[datetime.weekday(datetime.now())]}"
+                    ],
+                    token="epp_token",
+                )
+            )
             print(self.days[datetime.weekday(datetime.now())])
 
     class WorkDay(Event):
         """
         Triggers on day change
         """
+
         started = False
 
         def get_next_delay(self):
@@ -49,23 +58,29 @@ class WeekDay(EventGroup):
             wait_until(first(("00:00",)))
 
         def trigger(self, context_variable: str):
-            print(super().NGAC.change_context(
-                [f"{context_variable}:{str(datetime.weekday(datetime.now())<6).lower()}"], token="epp_token"))
+            print(
+                super().NGAC.change_context(
+                    [
+                        f"{context_variable}:{str(datetime.weekday(datetime.now())<6).lower()}"
+                    ],
+                    token="epp_token",
+                )
+            )
+            # [f"{context_variable}:{str(False).lower()}"],
 
-    mapping: dict[str, Type[Event]] = {
-        "DayOfTheWeek": DayOfTheWeek,
-        "WorkDay": WorkDay
-    }
+    mapping: dict[str, Type[Event]] = {"DayOfTheWeek": DayOfTheWeek, "WorkDay": WorkDay}
 
 
 class Hour(EventGroup):
     """
     Reports on hours to the server
     """
+
     class NineToFive(Event):
         """
         Reports wether the time is between nine and five
         """
+
         started = False
         state = "false"
 
@@ -82,13 +97,17 @@ class Hour(EventGroup):
         def trigger(self, context_variable: str):
             self.valid()
             print(f"{context_variable}:{self.state}")
-            print(super().NGAC.change_context(
-                [f"{context_variable}:{self.state}"], token="epp_token"))
+            print(
+                super().NGAC.change_context(
+                    [f"{context_variable}:{self.state}"], token="epp_token"
+                )
+            )
 
     class SixToEighteen(Event):
         """
         Reports wether the time is between six and eighteen
         """
+
         started = False
         state = False
 
@@ -105,10 +124,13 @@ class Hour(EventGroup):
         def trigger(self, context_variable: str):
             self.valid()
             print()
-            print(super().NGAC.change_context(
-                [f"{context_variable}:{self.state}"], token="epp_token"))
+            print(
+                super().NGAC.change_context(
+                    [f"{context_variable}:{self.state}"], token="epp_token"
+                )
+            )
 
     mapping: dict[str, Type[Event]] = {
         "NineToFive": NineToFive,
-        "SixToEighteen": SixToEighteen
+        "SixToEighteen": SixToEighteen,
     }

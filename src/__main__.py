@@ -28,9 +28,9 @@ def event_types(type: str):
     return ",".join(type.mapping.keys())
 
 
-@app.route("/event_types", methods=["POST"])
+@app.route("/events", methods=["POST"])
 @fields(request)
-def event_types(type: str, event_type: str):
+def event(type: str, event_type: str):
     type: Type[Daemon] = mapping.get(type, None)
     if not type:
         return "No such daemon type", 400
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     with app.test_request_context():
         print(url_for("new_daemon"))
     daemon_manager = Daemonizer()
-    app.run()
+    app.run(port=5001)
